@@ -52,34 +52,35 @@ par(mfrow=c(1,2))
 barplot(colMeans(Div_Raw.Hs,na.rm=T),las=2,main="HE")
 barplot(colMeans(Div_Raw.Ho,na.rm=T),las=2,main="HO")
 
-#Obtenemos la tabla con la heterocigosis por localidad
-*Heterocigosis esperada (Hs)*
+#Obtain a table with heterozygosity by localities
+#*Heterozygosity expected (Hs)*
 colMeans(BasicSS$Hs, na.rm=TRUE)
 Hs<-as.data.frame(colMeans(BasicSS$Hs, na.rm=TRUE))
 write.table(Hs,file="HS_argen",row.names=F, col.names=F, quote=F)
-*Heterocigosis observada (Ho)*
+*Heterozygosity observed (Ho)*
 colMeans(BasicSS$Ho, na.rm=TRUE)
 Ho<-as.data.frame(colMeans(BasicSS$Ho, na.rm=TRUE))
 write.table(Ho,file="HO_argen",row.names=T, col.names=F, quote=F)
 
-#PCA(individuos)*Hay que hacer este paso para poder calcular la distancia pareada entre individuos
+#PCA(individuals)*This is an exploratory analysis
 Cacto.scaled <- scaleGen(Cacto.ind, NA.method="mean")
 Cacto.pca <- dudi.pca(Cacto.scaled)
 #Le ponemos "2" al número de componentes
 s.label(Cacto.pca$li)
 summary(Cacto.pca)
 
-#Distancia pareada entre individuos y gráfica
+#Paired distance between individuals and its graph
 hclust(dist(Cacto.pca$li),method="ward.D2")
 plot(hclust(dist(Cacto.pca$li),method="ward.D2"),cex=0.5)
 
-###FST
+#Paired Fst (to find genetic diferentistion between sites/localities)
 Cacto.fst <- pairwise.neifst(Cacto.fstat)
-library(corrplot)
+#NOTE.To correct negative values that come out by nonhomogeneous sample size, they are set to 0 as follows:
+Cacto.fst[Cacto.fst<0]<-0
+#Make a corrplot
+library(corrplot) #Load this package to make a plot
 corrplot(as.matrix(Cacto.fst), is.corr=FALSE, type="lower", method="color", COL1(sequential="Purples"))
 
-NOTA: para corregir los valores negativos que salen por tamaño de muestra no homogeneo, se ponen en 0 de la siguiente manera:
-Cacto.fst[Cacto.fst<0]<-0
 
 
 
