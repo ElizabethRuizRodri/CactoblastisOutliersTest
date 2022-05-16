@@ -2,13 +2,14 @@
 ##  Structure and diveristy basic analysis ##
 ##-----------------------------------------##
 
+#There are the steps to run the structure and diversity analysis in the clean vcf file of Cactoblastis cactorum
+
 #Load packages in R:
 
 library(adegenet)
 library(hierfstat)
 library(fsthet)
 library(rgdal)
-library(maps)
 library(vcfR)
 
 #Charge vcf file clean
@@ -24,29 +25,29 @@ IndCacto_labels<-read.table("Argen_pop.txt", header=F)
 #Insert populations to the genind object
 pop(Cacto.ind) <- IndCacto_labels$V2
 
-#Cargamos la tabla de localidades
+#Charge sampled locations/sites
 LocsCacto<- read.table("Argen_locs.txt", sep="\t", header=T)
 
-#Poner las claves al objeto ind
+#Write the key in our ind object
 popNames(Cacto.ind)<-LocsCacto$key
 
-#Convertir el objeto genind a hierfstat y genpop para hacer estadísticos
+#Convert genind object to hierfstat and genpop 
 Cacto.fstat <-genind2hierfstat(Cacto.ind)
 Cacto.genpop <-genind2genpop(Cacto.ind)
 
-#Realizamos las estadísticas básicas
+#We obtain basic statistics 
 BasicSS <- basic.stats(Cacto.fstat)
 
-#Calculamos la diversidad para toda la muestra
+#Cacculate diversity of the complete sample
 BasicSS$overall
 
-#Calculamos la heterocigosis promedio, observada y esperada
-*Heterocigosis esperada*
+#Now we calculate the mean heterozygosity, expected and observed
+#*Expected heterozygosity*
 Div_Raw.Hs <-as.data.frame(BasicSS$Hs)
-*Heterocigosis observada*
+#*Observed heterozygosity*
 Div_Raw.Ho <-as.data.frame(BasicSS$Ho)
 
-#Creamos las gráficas de heterocigosis juntas
+#Make the heterozygosity graph (Ho and He together)
 par(mfrow=c(1,2))
 barplot(colMeans(Div_Raw.Hs,na.rm=T),las=2,main="HE")
 barplot(colMeans(Div_Raw.Ho,na.rm=T),las=2,main="HO")
