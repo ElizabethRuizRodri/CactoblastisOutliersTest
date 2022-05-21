@@ -1,0 +1,18 @@
+##------------------------------------------##
+##  Euclidean distance between populations  ##
+##       Association between genetic        ##
+##       structure and geography            ##
+##------------------------------------------##
+
+# Make a euclidean distance matrix with function "dist".
+Cacto_dist_eu=dist(LocsCacto[,c(2,3)])
+
+#Make the genetic distance matrix. 
+Cacto.dist<-dist.genpop(Cacto.genpop)
+
+#Plot of genetic and euclidean distance.
+plot(Cacto_dist_eu, Cacto.dist)
+
+#Mantel test
+mantel.randtest(Cacto_dist_eu, Cacto.dist)
+
